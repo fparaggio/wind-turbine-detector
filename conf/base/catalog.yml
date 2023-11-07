@@ -2,3 +2,20 @@
 #
 # Documentation for this file format can be found in "The Data Catalog"
 # Link: https://docs.kedro.org/en/stable/data/data_catalog.html
+
+turbines:
+  filepath: data/01_raw/uswtdb_v6_0_20230531.csv
+  type: pandas.CSVDataset
+  
+naip_images:
+  type: wind_turbine_detector.data_engineering.custom_datasets.ImageFolderDataset
+  path: data/01_raw/naip_wind
+  image_extension: .tif
+
+geodata_with_labels:
+  type: pandas.GenericDataset
+  filepath: data/03_primary/geodata_with_labels.pickle
+  file_format: pickle
+  fs_args:
+    open_args_save:
+      mode: "wb"
