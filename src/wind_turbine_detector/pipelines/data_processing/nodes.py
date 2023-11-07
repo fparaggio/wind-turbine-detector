@@ -67,7 +67,7 @@ def extract_relevant_raw_data(wtgs: pd.DataFrame) -> gpd.GeoDataFrame:
     return turbinesdf
 
 
-def square_poly(lat, lon, distance):
+def square_poly(lat: float, lon: float, distance: float) -> gpd.GeoSeries:
     """
     Generates a square-shaped bounding box around a specified point, given its
     geographical coordinates (latitude and longitude) and a buffer radius in meters.
@@ -100,7 +100,9 @@ def square_poly(lat, lon, distance):
     return res.to_crs('EPSG:4326').iloc[0]
 
 
-def label_naip_images(files, turbinedf, distance_ratio):
+def label_naip_images(files: list,
+                      turbinedf: gpd.GeoDataFrame,
+                      distance_ratio: float) -> gpd.GeoDataFrame:
     """
     Generate labels for geotiff images based on the provided enhanced US wind turbine
     database.
