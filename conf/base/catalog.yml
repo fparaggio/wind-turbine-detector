@@ -19,3 +19,8 @@ geodata_with_labels:
   fs_args:
     open_args_save:
       mode: "wb"
+
+folds: 
+  type: pickle.PickleDataset
+  filepath: data/03_primary/folds.pkl
+  backend: pickle

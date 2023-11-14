@@ -3,6 +3,8 @@ import geopandas as gpd
 from shapely import wkt, contains_properly, box
 import rasterio
 from tqdm import tqdm
+import numpy as np
+from sklearn.model_selection import KFold
 
 
 def extract_relevant_raw_data(wtgs: pd.DataFrame) -> gpd.GeoDataFrame:
@@ -248,3 +250,28 @@ def remove_overlaped_labels(gdf: gpd.GeoDataFrame) -> gpd.GeoDataFrame:
     filtered_labels = remove_overlapped_labels(label_data)
     """
     return gdf[~gdf['overlaps']]
+
+
+def prepare_folds(gdf_with_labels: gpd.GeoDataFrame, number_of_folders: int) -> dict:
+    """
+    Prepares cross-validation folds for a GeoDataFrame with labels.
+
+    Parameters:
+    - gdf_with_labels (gpd.GeoDataFrame): A GeoDataFrame containing labeled data.
+    - number_of_folders (int): The number of folds to create for cross-validation.
+
+    Returns:
+    dict: A dictionary containing cross-validation folds. Each fold is represented by
+    a key (0 to number_of_folders-1), and the corresponding value is a dictionary with
+    'train' and 'test' keys, each holding an array of unique image identifiers.
+    """
+    unique_images = gdf_with_labels['image'].unique()
+    unique_images = np.array(unique_images)
+    kf = KFold(n_splits=6)
+    folds = {}
+    for n, (train_index , test_index) in enumerate(kf.split(unique_images)):
+        X_train , X_test = unique_images[train_index], unique_images[test_index]
+        folds[n] = {}
+        folds[n]['train'] = X_train
+        folds[n]['test'] = X_test
+    return folds

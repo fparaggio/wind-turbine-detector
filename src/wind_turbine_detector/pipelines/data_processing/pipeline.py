@@ -1,8 +1,11 @@
 from kedro.pipeline import Pipeline, pipeline, node
-from .nodes import (extract_relevant_raw_data,
-                    label_naip_images,
-                    label_overlapping_boxes,
-                    remove_overlaped_labels)
+from .nodes import (
+    extract_relevant_raw_data,
+    label_naip_images,
+    label_overlapping_boxes,
+    remove_overlaped_labels,
+    prepare_folds
+)
 
 
 def create_pipeline(**kwargs) -> Pipeline:
@@ -32,5 +35,14 @@ def create_pipeline(**kwargs) -> Pipeline:
             inputs="labeled_dataset_overlaps",
             outputs="geodata_with_labels",
             name="remove_overlapped"
+        ),
+        node(
+            func=prepare_folds,
+            inputs=[
+                "geodata_with_labels",
+                "params:number_of_folds"
+            ],
+            outputs="folds",
+            name="prepare_folds"
         )
     ])
