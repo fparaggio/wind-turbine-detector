@@ -1,6 +1,6 @@
 # Wind Turbine Detection in Aerial Photos
 
-##Overview
+## Overview
 
 Welcome to the Wind Turbine Detection project, a robust solution for automatically identifying and locating wind turbines in aerial photographs. This open-source project combines the power of deep learning and computer vision to revolutionize the way we extract valuable information from vast landscapes.
 
